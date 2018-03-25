@@ -2,6 +2,9 @@
 
 This is Pokemon-Optimizer of chainer implementation.
 
+Description
+https://qiita.com/nagayosi/items/12c3f9d1b4697d4e2ba6
+
 I recommend that you use this with python3.
 
 
