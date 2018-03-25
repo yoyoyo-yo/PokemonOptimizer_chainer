@@ -9,10 +9,10 @@ I recommend that you use this with python3.
 
 ### for training
 ```
-python3 main.py --train
+python3 main.py --trainv --iter 10000 --gpu
 ```
 
 ### for test
 ```
-python3 main.py --test
+python3 main.py --test --gpu
 ```
