@@ -23,10 +23,10 @@ import _pickle as pickle
 
 ## Training data directory path
 HOME = os.path.expanduser('~') + '/'
-Train_file = 'Dataset/pokemon_train.txt'
-pokemon_file = 'Dataset/pokemon.txt'
-waza_file = 'Dataset/pokemon_waza.txt'
-seikaku_file = 'Dataset/pokemon_seikaku.txt'
+Train_file = 'pokemon_train.txt'
+pokemon_file = 'pokemon.txt'
+waza_file = 'pokemon_waza.txt'
+seikaku_file = 'pokemon_seikaku.txt'
 
 
 ## Config containing hyper-parameters
