@@ -31,6 +31,7 @@ seikaku_file = 'pokemon_seikaku.txt'
 
 ## Config containing hyper-parameters
 cf = {
+    'Iteration': 1000,
     'Minibatch': 10,
     'LearningRate': 0.01,
     'WeightDecay':0.0005,
@@ -209,7 +210,7 @@ def main_train(args):
     
     last = 0
 
-    for i in range(args.iter):
+    for i in range(cf['Iteration']):
         i += 1
 
         x, y, last, train = get_batch(train, cf['Minibatch'], last)
@@ -218,10 +219,16 @@ def main_train(args):
         train_losses = []
         train_accuracies = []
 
-        x = chainer.Variable(chainer.cuda.to_gpu(x))
-        t_d = chainer.Variable(chainer.cuda.to_gpu(d))
-        t_s = chainer.Variable(chainer.cuda.to_gpu(s))
-        t_w = chainer.Variable(chainer.cuda.to_gpu(w))
+        if args.gpu_id >= 0:
+            x = chainer.cuda.to_gpu(x)
+            d = chainer.cuda.to_gpu(d)
+            s = chainer.cuda.to_gpu(s)
+            w = chainer.cuda.to_gpu(w)
+
+        x = chainer.Variable(x)
+        t_d = chainer.Variable(d)
+        t_s = chainer.Variable(s)
+        t_w = chainer.Variable(w)
 
         y_d, y_s, y_w = model(x)
 
@@ -366,11 +373,10 @@ def print_config(args):
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Faster R-CNN demo')
-    parser.add_argument('--gpu', dest='gpu_id', help='GPU device id to use [0]',default=0, type=int)
+    parser.add_argument('--gpu', dest='gpu_id', help='GPU device id to use [0]',default=-1, type=int)
     parser.add_argument('--cpu', dest='cpu_mode',help='Use CPU (overrides --gpu)',action='store_true')
     parser.add_argument('--train', dest='train', help='train', action='store_true')
     parser.add_argument('--test', dest='test', help='test', action='store_true')
-    parser.add_argument('--iter', dest='iter', help='iteration', default=100, type=int)
     args = parser.parse_args()
     return args
 
@@ -381,9 +387,7 @@ if __name__ == '__main__':
     args = parse_args()
     print_config(args)
 
-    if args.cpu_mode:
-        pass
-    else:
+    if args.gpu_id >= 0:
         chainer.cuda.get_device(args.gpu_id).use()
     
     if args.train:
